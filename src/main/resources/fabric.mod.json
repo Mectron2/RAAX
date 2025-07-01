@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "raax",
+	"version": "${version}",
+	"name": "RAAX - Reborn of AntiAntiXray",
+	"description": "Kill the Anti-Xray!",
+	"authors": [
+		"Mectron"
+	],
+	"contact": {
+		"homepage": "https://github.com/Mectron2",
+		"sources": "https://github.com/Mectron2"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/raax/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+			"org.mectron.raax.ReAntiAntiXray"
+		]
+	},
+	"mixins": [
+		{
+			"config": "raax.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.6",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
