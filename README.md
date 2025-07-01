@@ -7,9 +7,9 @@ The algorithms used in this mod are not written from scratch, but their authorsh
 The original mod was written for 1.16.4, **RAAX works on 1.21.6**, in the future I will add support for older versions and rewrite all legacy code, thanks for your understanding!
 
 ## Installing
-1. Download the newest version from build/libs
-2. Put it into your mods folder in your fabric installation
-3. Install the Fabric API
+1. Download the newest version from releases
+2. Put it into your `mods` folder in your fabric installation
+3. Install the Fabric API and any XRay mod whichever you like (in the future I will add a built-in one)
 
 ## Usage
 To scan nearby blocks in selected radius, press `G` ingame.
