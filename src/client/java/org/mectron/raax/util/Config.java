@@ -1,5 +1,8 @@
 package org.mectron.raax.util;
 
+import net.minecraft.client.option.SimpleOption;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
+import net.minecraft.text.Text;
 import org.mectron.raax.commands.Manager;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -38,6 +41,12 @@ public class Config {
     };
     public static int kcScan;
     public static int kcRemove;
+    public static boolean SAFE_PACKETS = false;
+
+    public static SimpleOption<Double> GAMMA = new SimpleOption<>("options.gamma", SimpleOption.emptyTooltip(), (optionText, value) -> {
+        return Text.of("options.gamma.max");
+    }, SimpleOption.DoubleSliderCallbacks.INSTANCE, (double)10000F, (value) -> {
+    });
 
     static {
         try {

@@ -41,8 +41,6 @@ public class TickMixin {
             ReAntiAntiXray.revealNewBlocks(Config.rad, Config.delay);
         }
         if (ReAntiAntiXray.removeBlockBeta.checkPressed()) {
-            /*
-             * */
             for (int cx = -10; cx <= 10; cx++) {
                 for (int cy = -10; cy <= 10; cy++) {
                     for (int cz = -10; cz <= 10; cz++) {

@@ -12,12 +12,12 @@ public class Runner implements Runnable {
     boolean isRunning = true;
     long delay;
     int rad;
-    ProgressBar pbar;
+    ProgressBar progressBar;
 
-    public Runner(int rad, long delay, ProgressBar pbar) {
+    public Runner(int rad, long delay, ProgressBar progressBar) {
         this.rad = rad;
         this.delay = delay;
-        this.pbar = pbar;
+        this.progressBar = progressBar;
     }
 
     @Override
@@ -27,25 +27,21 @@ public class Runner implements Runnable {
         assert MinecraftClient.getInstance().player != null;
         BlockPos pos = MinecraftClient.getInstance().player.getBlockPos();
 
-
-        // Blocks that aren't ores but still needs to be checked
         Block[] checkBlocks = Config.checkblocks;
 
         for (int cx = -rad; cx <= rad; cx++) {
             for (int cy = -rad; cy <= rad; cy++) {
                 for (int cz = -rad; cz <= rad; cz++) {
                     if (!isRunning) break;
-                    pbar.progress++;
+                    progressBar.progress++;
                     BlockPos currentBlock = new BlockPos(pos.getX() + cx, pos.getY() + cy, pos.getZ() + cz);
 
                     Block block = MinecraftClient.getInstance().player.clientWorld.getBlockState(currentBlock).getBlock();
 
-                    boolean good = Config.scanAll; // cool for else man
+                    boolean good = Config.scanAll;
 
-                    // only check if block is a ore or in checkblocks (obsidian for example)
                     for (Block checkblock : checkBlocks) {
                         if (block.equals(checkblock)) {
-                            //Logger.info(block.toString() + " Is in checkbloks or a ore");
                             good = true;
                             break;
                         }
@@ -55,12 +51,8 @@ public class Runner implements Runnable {
                         continue;
                     }
 
-
-                    //Logger.info("Checking " + block.toString() + " at " + currblock.toShortString());
-
-
                     PlayerActionC2SPacket packet = new PlayerActionC2SPacket(
-                            PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
+                            Config.SAFE_PACKETS ? PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK : PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
                             currentBlock,
                             Direction.DOWN
                     );
@@ -73,6 +65,6 @@ public class Runner implements Runnable {
                 }
             }
         }
-        pbar.done = true;
+        progressBar.done = true;
     }
 }

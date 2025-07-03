@@ -17,6 +17,7 @@ public class Manager {
         c.add(new MoveThreshold());
         c.add(new Optimize());
         c.add(new SetBind());
+        c.add(new SafeMode());
     }
 
     public List<Base> get() {

@@ -9,9 +9,9 @@
 	],
 	"contact": {
 		"homepage": "https://github.com/Mectron2",
-		"sources": "https://github.com/Mectron2"
+		"sources": "https://github.com/Mectron2/RAAX"
 	},
-	"license": "CC0-1.0",
+	"license": "GPL-3.0",
 	"icon": "assets/raax/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -28,8 +28,7 @@
 	"depends": {
 		"fabricloader": ">=0.16.14",
 		"minecraft": "~1.21.6",
-		"java": ">=21",
-		"fabric-api": "*"
+		"java": ">=21"
 	},
 	"suggests": {
 		"another-mod": "*"
