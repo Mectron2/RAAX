@@ -1,17 +1,15 @@
 package org.mectron.raax.features;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.mectron.raax.api.Toggleable;
+import org.mectron.raax.util.Config;
 
 public class Scanner implements Toggleable {
+    private final KeyBinding keyBind = Config.scanBlocksKey;
     private boolean enabled = false;
     private boolean wasPressedLastTick = false;
-    private final int keyCode;
-
-    public Scanner(int keyCode) {
-        this.keyCode = keyCode;
-    }
 
     @Override
     public String getName() {
@@ -31,9 +29,12 @@ public class Scanner implements Toggleable {
     public boolean checkPressed() {
         if (MinecraftClient.getInstance().currentScreen != null) return false;
 
+        String tk = keyBind.getBoundKeyTranslationKey();
+        InputUtil.Key mcKey = InputUtil.fromTranslationKey(tk);
+
         boolean isCurrentlyPressed = InputUtil.isKeyPressed(
                 MinecraftClient.getInstance().getWindow().getHandle(),
-                keyCode
+                mcKey.getCode()
         );
 
         if (!isCurrentlyPressed) {

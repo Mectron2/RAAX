@@ -1,8 +1,10 @@
 package org.mectron.raax;
 
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -10,23 +12,23 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import org.mectron.raax.features.Scanner;
-import org.mectron.raax.mixin.WorldRendererAccessor;
-import org.mectron.raax.util.*;
 import org.mectron.raax.gui.ProgressBar;
-import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.MinecraftClient;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.util.InputUtil;
-import org.lwjgl.glfw.GLFW;
 import org.mectron.raax.manager.FeatureManager;
+import org.mectron.raax.mixin.WorldRendererAccessor;
+import org.mectron.raax.util.Logger;
+import org.mectron.raax.util.NoDepthRenderLayer;
+import org.mectron.raax.util.RefreshingJob;
+import org.mectron.raax.util.Runner;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import static org.mectron.raax.util.Config.*;
+import static org.mectron.raax.util.Config.ORE_COLORS;
+import static org.mectron.raax.util.Config.clearHighlightKey;
+import static org.mectron.raax.util.Config.isAffordableBlock;
+import static org.mectron.raax.util.Config.scanBlocksKey;
+import static org.mectron.raax.util.Config.toggleXrayKey;
 
 public class ReAntiAntiXray implements ClientModInitializer {
     public static List<RefreshingJob> jobs = new ArrayList<>();
@@ -90,7 +92,7 @@ public class ReAntiAntiXray implements ClientModInitializer {
             for (BlockPos blockPos : blocksToHighlight) {
                 BlockState state = client.world.getBlockState(blockPos);
 
-                if (Config.isAffordableBlock(state.getBlock())) {
+                if (isAffordableBlock(state.getBlock())) {
                     renderer.invokeDrawBlockOutline(
                             matrices,
                             consumer,

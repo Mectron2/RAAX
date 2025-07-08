@@ -1,18 +1,13 @@
 package org.mectron.raax.mixin;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import org.mectron.raax.ReAntiAntiXray;
 import org.mectron.raax.manager.FeatureManager;
 import org.mectron.raax.util.Config;
 import org.mectron.raax.util.Logger;
 import org.mectron.raax.util.RefreshingJob;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
