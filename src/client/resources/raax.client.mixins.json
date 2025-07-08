@@ -4,7 +4,10 @@
 	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"TickMixin",
-		"CommandMixin"
+		"CommandMixin",
+		"BlockMixin",
+		"GameOptionsMixin",
+		"WorldRendererAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
