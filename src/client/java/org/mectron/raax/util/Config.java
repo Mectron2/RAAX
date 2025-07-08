@@ -1,7 +1,6 @@
 package org.mectron.raax.util;
 
 import net.minecraft.client.option.SimpleOption;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.text.Text;
 import org.mectron.raax.commands.Manager;
 import net.minecraft.block.Block;
@@ -35,9 +34,6 @@ public class Config {
             Blocks.NETHER_GOLD_ORE,
             Blocks.NETHER_QUARTZ_ORE,
             Blocks.ANCIENT_DEBRIS,
-            Blocks.OBSIDIAN,
-            Blocks.CLAY,
-            Blocks.MOSSY_COBBLESTONE
     };
     public static int kcScan;
     public static int kcRemove;

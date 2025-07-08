@@ -6,7 +6,8 @@
 		"TickMixin",
 		"CommandMixin",
 		"BlockMixin",
-		"GameOptionsMixin"
+		"GameOptionsMixin",
+		"WorldRendererAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
