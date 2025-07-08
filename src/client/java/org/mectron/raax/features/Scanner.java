@@ -6,11 +6,11 @@ import org.mectron.raax.api.Toggleable;
 
 public class Scanner implements Toggleable {
     private boolean enabled = false;
-    boolean flag3 = false;
-    int keyBind;
+    private boolean wasPressedLastTick = false;
+    private final int keyCode;
 
-    public Scanner(int keyBind) {
-        this.keyBind = keyBind;
+    public Scanner(int keyCode) {
+        this.keyCode = keyCode;
     }
 
     @Override
@@ -30,15 +30,22 @@ public class Scanner implements Toggleable {
 
     public boolean checkPressed() {
         if (MinecraftClient.getInstance().currentScreen != null) return false;
-        boolean flag2 = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), keyBind);
-        if (!flag2) {
-            flag3 = false;
+
+        boolean isCurrentlyPressed = InputUtil.isKeyPressed(
+                MinecraftClient.getInstance().getWindow().getHandle(),
+                keyCode
+        );
+
+        if (!isCurrentlyPressed) {
+            wasPressedLastTick = false;
             return false;
         }
-        if (flag3) {
+
+        if (wasPressedLastTick) {
             return false;
         }
-        flag3 = true;
+
+        wasPressedLastTick = true;
         return true;
     }
 }

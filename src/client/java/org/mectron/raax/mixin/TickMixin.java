@@ -40,8 +40,6 @@ public class TickMixin {
         });
         ReAntiAntiXray.jobs = nl;
         if (FeatureManager.SCANNER.checkPressed()) {
-            assert MinecraftClient.getInstance().player != null;
-            MinecraftClient.getInstance().player.sendMessage(Text.of("Refreshing blocks..."), true);
             ReAntiAntiXray.revealNewBlocks(Config.rad, Config.delay);
         }
 
