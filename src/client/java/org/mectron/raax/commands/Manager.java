@@ -16,7 +16,6 @@ public class Manager {
         c.add(new Auto());
         c.add(new MoveThreshold());
         c.add(new Optimize());
-        c.add(new SetBind());
         c.add(new SafeMode());
     }
 

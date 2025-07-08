@@ -17,14 +17,14 @@ public class Runner implements Runnable {
     int rad;
     ProgressBar progressBar;
 
-    private static final Queue<BlockPos> blocksToHighlight = new ConcurrentLinkedQueue<>();
+    private static final Queue<BlockPos> scannedBlocks = new ConcurrentLinkedQueue<>();
 
-    public static Queue<BlockPos> getBlocksToHighlight() {
-        return blocksToHighlight;
+    public static Queue<BlockPos> getScannedBlocks() {
+        return scannedBlocks;
     }
 
-    public static void clearHighlightedBlocks() {
-        blocksToHighlight.clear();
+    public static void clearScannedBlocks() {
+        scannedBlocks.clear();
     }
 
     public Runner(int rad, long delay, ProgressBar progressBar) {
@@ -44,7 +44,7 @@ public class Runner implements Runnable {
         BlockPos pos = client.player.getBlockPos();
         Block[] checkBlocks = Config.checkblocks;
 
-        blocksToHighlight.clear();
+        scannedBlocks.clear();
 
         for (int cx = -rad; cx <= rad; cx++) {
             for (int cy = -rad; cy <= rad; cy++) {
@@ -75,6 +75,8 @@ public class Runner implements Runnable {
                     );
                     conn.sendPacket(packet);
 
+                    scannedBlocks.offer(currentBlock);
+
                     try {
                         Thread.sleep(delay);
                     } catch (InterruptedException e) {
@@ -93,21 +95,21 @@ public class Runner implements Runnable {
             Thread.currentThread().interrupt();
         }
 
-        for (int cx = -rad; cx <= rad; cx++) {
-            for (int cy = -rad; cy <= rad; cy++) {
-                for (int cz = -rad; cz <= rad; cz++) {
-                    BlockPos currentBlock = new BlockPos(pos.getX() + cx, pos.getY() + cy, pos.getZ() + cz);
-                    Block block = client.player.clientWorld.getBlockState(currentBlock).getBlock();
-
-                    for (Block checkblock : checkBlocks) {
-                        if (block.equals(checkblock)) {
-                            blocksToHighlight.offer(currentBlock);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+//        for (int cx = -rad; cx <= rad; cx++) {
+//            for (int cy = -rad; cy <= rad; cy++) {
+//                for (int cz = -rad; cz <= rad; cz++) {
+//                    BlockPos currentBlock = new BlockPos(pos.getX() + cx, pos.getY() + cy, pos.getZ() + cz);
+//                    Block block = client.player.clientWorld.getBlockState(currentBlock).getBlock();
+//
+//                    for (Block checkblock : checkBlocks) {
+//                        if (block.equals(checkblock)) {
+//                            blocksToHighlight.offer(currentBlock);
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
         progressBar.done = true;
     }
 }

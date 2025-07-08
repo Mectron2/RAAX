@@ -10,6 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.mectron.raax.features.Scanner;
 import org.mectron.raax.mixin.WorldRendererAccessor;
 import org.mectron.raax.util.*;
 import org.mectron.raax.gui.ProgressBar;
@@ -25,11 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
+import static org.mectron.raax.util.Config.*;
+
 public class ReAntiAntiXray implements ClientModInitializer {
-    public static KeyBind rvn = new KeyBind(Config.kcScan);
-    public static KeyBind removeBlockBeta = new KeyBind(Config.kcRemove);
-    private static KeyBinding toggleXrayKey;
-    private static KeyBinding clearHighlightKey;
     public static List<RefreshingJob> jobs = new ArrayList<>();
 
     public static void revealNewBlocks(int rad, long delayInMS) {
@@ -45,20 +44,6 @@ public class ReAntiAntiXray implements ClientModInitializer {
 
         FeatureManager.init();
 
-        toggleXrayKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.raax.toggle_xray",
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_X,
-                "category.raax"
-        ));
-
-        clearHighlightKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.raax.clear_highlight",
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_C,
-                "category.raax"
-        ));
-
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (toggleXrayKey.wasPressed()) {
                 FeatureManager.XRAY.toggle();
@@ -70,10 +55,19 @@ public class ReAntiAntiXray implements ClientModInitializer {
             }
 
             while (clearHighlightKey.wasPressed()) {
-                Runner.clearHighlightedBlocks();
+                Runner.clearScannedBlocks();
                 assert client.player != null;
                 client.player.sendMessage(
                         Text.of("§7Block highlights cleared"),
+                        true
+                );
+            }
+
+            if (scanBlocksKey.wasPressed()) {
+                FeatureManager.SCANNER.toggle();
+                assert client.player != null;
+                client.player.sendMessage(
+                        Text.of("§7Scanning blocks..."),
                         true
                 );
             }
@@ -91,12 +85,12 @@ public class ReAntiAntiXray implements ClientModInitializer {
             VertexConsumer consumer = buffer.getBuffer(NoDepthRenderLayer.RENDER_LAYER);
             WorldRendererAccessor renderer = (WorldRendererAccessor) client.worldRenderer;
 
-            Queue<BlockPos> blocksToHighlight = Runner.getBlocksToHighlight();
+            Queue<BlockPos> blocksToHighlight = Runner.getScannedBlocks();
 
             for (BlockPos blockPos : blocksToHighlight) {
                 BlockState state = client.world.getBlockState(blockPos);
 
-                if (!state.isAir()) {
+                if (Config.isAffordableBlock(state.getBlock())) {
                     renderer.invokeDrawBlockOutline(
                             matrices,
                             consumer,
@@ -104,7 +98,7 @@ public class ReAntiAntiXray implements ClientModInitializer {
                             camPos.x, camPos.y, camPos.z,
                             blockPos,
                             state,
-                            0xFF00FFFF
+                            ORE_COLORS.get(state.getBlock())
                     );
                 }
             }
