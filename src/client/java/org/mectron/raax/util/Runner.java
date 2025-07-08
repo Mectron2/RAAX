@@ -54,11 +54,11 @@ public class Runner implements Runnable {
 
                     BlockPos currentBlock = new BlockPos(pos.getX() + cx, pos.getY() + cy, pos.getZ() + cz);
 
-                    Block blockBefore = client.player.clientWorld.getBlockState(currentBlock).getBlock();
+                    Block block = client.player.clientWorld.getBlockState(currentBlock).getBlock();
 
                     boolean good = Config.scanAll;
                     for (Block checkblock : checkBlocks) {
-                        if (blockBefore.equals(checkblock)) {
+                        if (block.equals(checkblock)) {
                             good = true;
                             break;
                         }
@@ -81,16 +81,32 @@ public class Runner implements Runnable {
                         Thread.currentThread().interrupt();
                         break;
                     }
-
-                    Block blockAfter = client.player.clientWorld.getBlockState(currentBlock).getBlock();
-
-                    if (blockBefore.equals(blockAfter)) {
-                        blocksToHighlight.offer(currentBlock);
-                    }
                 }
                 if (!isRunning) break;
             }
             if (!isRunning) break;
+        }
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        for (int cx = -rad; cx <= rad; cx++) {
+            for (int cy = -rad; cy <= rad; cy++) {
+                for (int cz = -rad; cz <= rad; cz++) {
+                    BlockPos currentBlock = new BlockPos(pos.getX() + cx, pos.getY() + cy, pos.getZ() + cz);
+                    Block block = client.player.clientWorld.getBlockState(currentBlock).getBlock();
+
+                    for (Block checkblock : checkBlocks) {
+                        if (block.equals(checkblock)) {
+                            blocksToHighlight.offer(currentBlock);
+                            break;
+                        }
+                    }
+                }
+            }
         }
         progressBar.done = true;
     }
