@@ -9,11 +9,14 @@ The original mod was written for 1.16.4, **RAAX works on 1.21.6**, in the future
 ## Installing
 1. Download the newest version from releases
 2. Put it into your `mods` folder in your fabric installation
-3. Install the Fabric API and any XRay mod whichever you like (in the future I will add a built-in one)
+3. Install the Fabric API
+4. That's it :)
 
 ## Usage
 To scan nearby blocks in selected radius, press `G` ingame.
-To remove a block for testing, creating a ghost block, press `V` ingame. (Deprecated functionality that will be removed)
+To turn on X-ray, press `X` (WIP, it's better to off smooth lighting).
+To clear block highlighting, press `N`.
+All bindings can be changed and looked at in the settings
 
 ## Commands
-All commands can be viewed using `:help`
+All commands can be viewed using `:help` or `:?`
